@@ -1,13 +1,8 @@
 <?php
-$name="RJ Clark";
-$picture="proFace.jpeg";
 $email="rclark.437.j@gmail.com";
-$major="Computer Information Technology";
-$gradYear="May 2020";
-$standing="senior";
-$reason="I joined this class <s>to graduate</s> to learn dynamic web programming with a goal of pursuing web development.";
-$hobbies="Here are some interesting things about me:<br/>∙ I do comedy improv.<br/>∙ I run a Discord server of 600+ Pokémon GO players on NKU's campus. <br/>∙ I am the student director of the NKU Pep Band.<br/>∙ I enjoy playing games of all kinds.";
-$bio="Hello! My name is ".$name.". I am a ".$standing." ".$major." major who graduates in ".$gradYear.". ".$reason." ".$hobbies;
+$bio="Select an encounter type below to get started!";
+require('json.php');
+$type=readJSON("type.json");
 ?>
 
 
@@ -20,22 +15,55 @@ $bio="Hello! My name is ".$name.". I am a ".$standing." ".$major." major who gra
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-        <title>RJ Clark</title>
+        <title>Encounter Generator</title>
     </head>
 
     <body>
         <div class="jumbotron">
             <!doctype html>
-
-            <h1 class="display-4">
-                <?= $name ?>
+            
+            <h1 class="display-4" align="center">
+                <?= "Encounter Generator" ?>
             </h1>
-            <img src="<?= $picture ?>" size="30%"/>
-            <p class="lead">
+            <p class="lead" align="center">
                 <?= $bio."<br/>"; ?>
             </p>
+            <?php
+                $i=0;
+                echo '<center><form action="detail.php" method="GET" id="enc_dropdown_detail"</center>';
+                echo '<center><select form="enc_dropdown_detail" name="id" id="id" required></center>';
+                while(isset($type[$i])){
+                    /*echo '<center><a class="btn btn-primary btn-lg" href="detail.php?id='.$i.'" role="button" align="center">'.$type[$i]['name'].'</a></center><br/>';*/
+                    echo '<option value="'.$i.'">'.$type[$i]['name'].'</option>';
+                    $i++;
+                }
+                echo '</select></center></br>';
+                echo '<button type="submit">Begin the encounter!</button>';
+                echo '</form>';
+            ?>
+            <p class="lead" align="center">
+                Or<br/>
+                <center><a class="btn btn-primary btn-lg" href="create.php" role="button" align="center">Create your own!</a></center><br/>
+            </p>
+            <p class="lead" align="center">
+                Or edit an existing encounter by selecting one below:<br/>
+                <?php
+                $i=0;
+                echo '<center><form action="edit.php" method="GET" id="enc_dropdown_edit"></center>';
+                echo '<center><select form="enc_dropdown_edit" name="id" id="id" required></center>';
+                while(isset($type[$i])){
+                    /*echo '<center><a class="btn btn-primary btn-lg" href="detail.php?id='.$i.'" role="button" align="center">'.$type[$i]['name'].'</a></center><br/>';*/
+                    echo '<option value="'.$i.'">'.$type[$i]['name'].'</option>';
+                    $i++;
+                }
+                echo '</select></center></br>';
+                echo '<button type="submit">Edit Encounter</button>';
+                echo '</form>';
+            ?>
+            </p>
             <hr class="my-4">
-            <a class="btn btn-primary btn-lg" href="mailto:<?php echo $email ?>" role="button">Email me at <?= $email; ?></a>
+            <center><p>Some encounters borrowed from <a href="http://www.dndspeak.com">Dndspeak</a>.</p></center>
+
         </div>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
