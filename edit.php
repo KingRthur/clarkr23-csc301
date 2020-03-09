@@ -4,8 +4,6 @@ $type=readJSON("type.json");
 if (isset($_GET['id'])) $id=$_GET['id'];
 elseif (isset($_POST['id'])) $id=$_POST['id'];
 if (!isset($_POST['funcType'])) $_POST['funcType']='null';
-echo '<pre>';
-print_r ($_GET);
 
 function modEncType() {
     //Check if JSON file exists. Create an empty version if not.
@@ -22,15 +20,13 @@ function modEncType() {
         $tempRec=[];
         $tempEnc=[];
         foreach($_POST as $key => $value){
-            if ($index<3) ($tempRec[$key] = $value);
+            if ($index<4) ($tempRec[$key] = $value);
             else {$tempEnc[$encIndex] = $value;
                 $encIndex++;
             }
             $index++;
         }
         $tempRec['encounters']=$tempEnc;
-        echo '<pre>';
-        print_r ($tempRec);
         //Write data to JSON db.
         modifyJSON("type.json",$tempRec,$_POST['id']);
         
@@ -97,14 +93,14 @@ function delEncType() {
                     echo '<center>'.($i+1).'.   <input type="text" name="enc'.$i.'" value="'.$type[$id]['encounters'][$i].'" required"/></center><br/>';
                     $i++;
                 }
-                echo '<center><button type="sumbit">Submit</button></center>';
+                echo '<center><button type="sumbit" class="btn btn-primary btn-lg">Submit</button></center>';
                 echo '</form>';
                 //Delete record.
                 echo '<center></br>Or Delete this Encounter Altogether!</center>';
                 echo '<form action="edit.php" method="POST">
                 <input type="hidden" name="funcType" value="delete"/>
                 <input type="hidden" name="id" value="'.$_GET['id'].'"/>';
-                echo '<center><button type="sumbit">Delete!</button></center>';
+                echo '<center><button type="sumbit" class="btn btn-danger btn-lg">Delete!</button></center>';
                 echo '</form>';
             ?>
             <hr class="my-4">

@@ -23,8 +23,6 @@ function addEncType() {
             $index++;
         }
         $tempRec['encounters']=$tempEnc;
-        echo '<pre>';
-        print_r ($tempRec);
         //Write data to JSON db.
         $input = readJSON('type.json');
         $input[count($input)] = $tempRec;
@@ -72,7 +70,7 @@ function addEncType() {
                     echo '<center>'.($i+1).'.   <input type="text" name="enc'.$i.' required"/></center><br/>';
                     $i++;
                 }
-                echo '<center><button type="sumbit">Submit</button></center>';
+                echo '<center><button type="sumbit" class="btn btn-primary btn-lg">Submit</button></center>';
                 echo '</form>';
             ?>
             <hr class="my-4">

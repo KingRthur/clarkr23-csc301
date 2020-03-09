@@ -2,8 +2,8 @@
 function signup(){
     if(count($_POST)>0){
         //Check for database
-        if(!file_exists('database.csv')){
-            $h=fopen('database.csv','w+');
+        if(!file_exists('database.csv.php')){
+            $h=fopen('database.csv.php','w+');
             fwrite($h,'');
             fclose($h);
         }
@@ -17,18 +17,18 @@ function signup(){
         if(strlen($_POST['password']) < 8) return('The password must be at least 8 characters');
 
         //Check for email
-        $h=fopen('database.csv', 'r');
+        $h=fopen('database.csv.php', 'r');
         while(!feof($h)){
             $line=fgets($h);
             if(strstr($line,$_POST['email'])) return('The email is already registered.');
         }
         fclose($h);
 
-        //Encrypt password
-        $_POST['password']=password_hash($_POST['password'], PASSWORD_DEFAULT);
+        //TODO Encrypt password
+        //$_POST['password']=password_hash($_POST['password'], PASSWORD_DEFAULT);
 
         //Apppend data to a file
-        $h=fopen('database.csv','a+');
+        $h=fopen('database.csv.php','a+');
         fwrite($h,implode(';',[$_POST['email'],$_POST['password']])."\n");
         fclose($h);
 
@@ -45,6 +45,7 @@ if(count($_POST)>0){
 ?>
 
 <form action="signup.php" method="POST">
+    Register an account:<br/>
     Email
     <input type="email" name="email" required /><br />
     Password

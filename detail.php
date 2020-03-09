@@ -3,8 +3,6 @@ $email="rclark.437.j@gmail.com";
 $bio="Select an encounter type below to get started!";
 require ('json.php');
 $type=readJSON("type.json");
-echo '<pre>';
-print_r($type);
 if(!isset($_GET['id'])){
 	echo 'Please enter the id of a member or visit the <a href="index.php">index page</a>.';
 	die();

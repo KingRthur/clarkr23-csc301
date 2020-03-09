@@ -38,11 +38,11 @@ $type=readJSON("type.json");
                     $i++;
                 }
                 echo '</select></center></br>';
-                echo '<button type="submit">Begin the encounter!</button>';
+                echo '<button type="submit" class="btn btn-primary btn-lg">Begin the encounter!</button>';
                 echo '</form>';
             ?>
             <p class="lead" align="center">
-                Or<br/>
+                Or <a href="signin.php">Sign In</a> or <a href="signup.php">Sign Up</a> to create and edit encounters.<br/>
                 <center><a class="btn btn-primary btn-lg" href="create.php" role="button" align="center">Create your own!</a></center><br/>
             </p>
             <p class="lead" align="center">
@@ -57,7 +57,7 @@ $type=readJSON("type.json");
                     $i++;
                 }
                 echo '</select></center></br>';
-                echo '<button type="submit">Edit Encounter</button>';
+                echo '<button type="submit" class="btn btn-primary btn-lg">Edit Encounter</button>';
                 echo '</form>';
             ?>
             </p>
