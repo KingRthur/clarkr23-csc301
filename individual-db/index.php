@@ -1,6 +1,9 @@
 <?php
 $email="rclark.437.j@gmail.com";
+require_once('dbCl.php');
 session_start();
+if (!isset($_SESSION['role'])) $_SESSION['role'] = 'null';
+
 $opt = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -55,22 +58,50 @@ while ($row = $stmt->fetch()) {
             ?>
             <p class="lead" align="center">
                 Or <a href="signin.php">Sign In</a> or <a href="signup.php">Sign Up</a> to create and edit encounters.<br/>
-                <center><a class="btn btn-primary btn-lg" href="create.php" role="button" align="center">Create your own!</a></center><br/>
             </p>
             <p class="lead" align="center">
-                Or edit an existing encounter by selecting one below:<br/>
                 <?php
-                $i=0;
-                echo '<center><form action="edit.php" method="GET" id="enc_dropdown_edit"></center>';
-                echo '<center><select form="enc_dropdown_edit" name="id" id="id" required></center>';
-                foreach($type as $key => $value){
-                    /*echo '<center><a class="btn btn-primary btn-lg" href="detail.php?id='.$i.'" role="button" align="center">'.$type[$i]['name'].'</a></center><br/>';*/
-                    echo '<option value="'.$key.'">'.$value.'</option>';
+                if ($_SESSION['role']=='user'){
+                    echo '<center><a class="btn btn-primary btn-lg" href="create.php" role="button" align="center">Create your own!</a></center><br/>';
+                    echo 'Or edit an existing encounter by selecting one below:<br/>';
+                    $i=0;
+                    echo '<center><form action="edit.php" method="GET" id="enc_dropdown_edit"></center>';
+                    echo '<center><select form="enc_dropdown_edit" name="id" id="id" required></center>';
+                    print_r($type);
+                    foreach($type as $key => $value){
+                        /*echo '<center><a class="btn btn-primary btn-lg" href="detail.php?id='.$i.'" role="button" align="center">'.$type[$i]['name'].'</a></center><br/>';*/
+                        $table=loadTable($key);
+                        print_r($type);
+                        if ($table['creator_id']==$_SESSION['user_id']){
+                            echo '<option value="'.$key.'">'.$value.'</option>';
+                        }
+                    }
+                    echo '</select></center></br>';
+                    echo '<button type="submit" class="btn btn-primary btn-lg">Edit Encounter</button>';
+                    echo '</form>';
                 }
-                echo '</select></center></br>';
-                echo '<button type="submit" class="btn btn-primary btn-lg">Edit Encounter</button>';
-                echo '</form>';
-            ?>
+                ?>
+                <?php
+                if ($_SESSION['role']=='admin'){
+                    echo '<center><a class="btn btn-primary btn-lg" href="create.php" role="button" align="center">Create your own!</a></center><br/>';
+                    echo 'Or edit an existing encounter by selecting one below:<br/>';
+                    $i=0;
+                    echo '<center><form action="edit.php" method="GET" id="enc_dropdown_edit"></center>';
+                    echo '<center><select form="enc_dropdown_edit" name="id" id="id" required></center>';
+                    foreach($type as $key => $value){
+                        /*echo '<center><a class="btn btn-primary btn-lg" href="detail.php?id='.$i.'" role="button" align="center">'.$type[$i]['name'].'</a></center><br/>';*/
+                        echo '<option value="'.$key.'">'.$value.'</option>';
+                    }
+                    echo '</select></center></br>';
+                    echo '<button type="submit" class="btn btn-primary btn-lg">Edit Encounter</button>';
+                    echo '</form>';
+                }
+                ?>
+                <?php
+                if ($_SESSION['role']=='admin'){
+                    echo '<p><center><a class="btn btn-primary btn-lg" href="admin.php" role="button" align="center">Admin Portal</a></center><br/></p>';
+                }
+                ?>
             </p>
             <hr class="my-4">
             <center><p>Some encounters borrowed from <a href="http://www.dndspeak.com">Dndspeak</a>.</p></center>
