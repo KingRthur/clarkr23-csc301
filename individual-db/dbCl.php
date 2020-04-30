@@ -22,7 +22,6 @@ function loadTable($tableID){
     //Query the encounter table for the specified ID.
     $stmt = $pdo->prepare('SELECT * FROM encounter_types WHERE id = ?');
     $stmt->execute([$id]);
-    $foo=0;
     //Retrieve column names and create local variables to access them in the PDO array.
     $table=[];
     $row = $stmt->fetch();

@@ -101,6 +101,9 @@ while ($row = $stmt->fetch()) {
                 if ($_SESSION['role']=='admin' || $_SESSION['role']=='manager'){
                     echo '<p><center><a class="btn btn-primary btn-lg" href="admin.php" role="button" align="center">Admin Portal</a></center><br/></p>';
                 }
+                if (isset($_SESSION['user_id'])) {
+                    echo'</br><a href="signout.php">Sign Out</a>';
+                }
                 ?>
             </p>
             <hr class="my-4">
