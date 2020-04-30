@@ -26,6 +26,7 @@ function signin(){
             if(password_verify($_POST['password'],$row['password'])){
                 session_start();
                 $_SESSION['user_id']=$row['id'];
+                $_SESSION['role']=$row['role'];
                 echo 'You have successfully signed into your account. You may now <a href="index.php">Return to home.</a>.';
                 return "";
             }

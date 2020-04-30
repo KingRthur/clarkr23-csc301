@@ -1,8 +1,7 @@
 <?php
 require_once ('dbCl.php');
 session_start();
-//if (!isset($_SESSION['role'])) $_SESSION['role'] = 'null';
-$_SESSION['role'] = 'admin';
+if (!isset($_SESSION['role'])) $_SESSION['role'] = 'null';
 if (!isset($_POST['funcType'])){ 
     $_POST['funcType'] = 'null';
 }
@@ -21,7 +20,6 @@ function modUserType() {
             $userAtts[$key] = $value;
         }
         $userAtts['password'] = password_hash($userAtts['password'], PASSWORD_DEFAULT);
-        print_r($userAtts);
         try{
         $pdo->beginTransaction();
         $stmt = $pdo->prepare('UPDATE users SET username=:username, password=:password, email=:email, role=:role WHERE id=:id');

@@ -1,9 +1,8 @@
 <?php
 require_once ('dbCl.php');
 session_start();
-//if (!isset($_SESSION['role'])) $_SESSION['role'] = 'null';
-$_SESSION['role'] = 'admin';
-if (!isset($_POST['funcType']) $_POST['funcType'] = 'null';
+if (!isset($_SESSION['role'])) $_SESSION['role'] = 'null';
+if (!isset($_POST['funcType'])) $_POST['funcType'] = 'null';
 $id=$_POST['id'];
 
 function modEncType() {
@@ -105,7 +104,7 @@ function delEncType() {
                 <?= "The Encounter Portal" ?>
             </h1>
             <?php
-                if ($_SESSION['role']!='admin') echo '<script type="text/JavaScript">window.location.replace("index.php");</script>';
+                if ($_SESSION['role']!='admin' && $_SESSION['role']!='manager') echo '<script type="text/JavaScript">window.location.replace("index.php");</script>';
                 if ($_POST['funcType'] == 'modify') modEncType();
                 elseif ($_POST['funcType'] == 'delete') delEncType();
                 

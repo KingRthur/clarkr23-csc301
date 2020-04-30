@@ -82,7 +82,7 @@ while ($row = $stmt->fetch()) {
                 }
                 ?>
                 <?php
-                if ($_SESSION['role']=='admin'){
+                if ($_SESSION['role']=='admin' || $_SESSION['role']=='manager'){
                     echo '<center><a class="btn btn-primary btn-lg" href="create.php" role="button" align="center">Create your own!</a></center><br/>';
                     echo 'Or edit an existing encounter by selecting one below:<br/>';
                     $i=0;
@@ -98,7 +98,7 @@ while ($row = $stmt->fetch()) {
                 }
                 ?>
                 <?php
-                if ($_SESSION['role']=='admin'){
+                if ($_SESSION['role']=='admin' || $_SESSION['role']=='manager'){
                     echo '<p><center><a class="btn btn-primary btn-lg" href="admin.php" role="button" align="center">Admin Portal</a></center><br/></p>';
                 }
                 ?>
