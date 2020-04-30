@@ -1,20 +1,23 @@
 <?php
-$email="rclark.437.j@gmail.com";
-$bio="Select an encounter type below to get started!";
-require ('json.php');
-$type=readJSON("type.json");
+require_once ('dbCl.php');
+session_start();
+if (!isset($_SESSION['role'])) $_SESSION['role'] = 'null';
+
 if(!isset($_GET['id'])){
-	echo 'Please enter the id of a member or visit the <a href="index.php">index page</a>.';
-	die();
-}
-if($_GET['id']<0 || $_GET['id']>count($type)-1){
 	echo 'Please select an encounter type on the <a href="index.php">index page</a>.';
 	die();
 }
-if(isset($_GET['id'])){
+elseif(isset($_GET['id'])){
     $id=$_GET['id'];
-    $title=$type[$id]['name'];
 }
+
+$table=loadTable($id);
+
+if($_GET['id']<0 || count($table) < 2){
+	echo 'Please select an encounter type on the <a href="index.php">index page</a>.';
+	die();
+}
+
 ?>
 
 
@@ -27,20 +30,38 @@ if(isset($_GET['id'])){
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-        <title><?= $title ?> Encounters</title>
+        <title><?= $table['name'] ?> Encounters</title>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script>
+        function sendLike(enc_id){
+           
+            // $("#likeButton").click(function(){
+            $.ajax({
+                type: "GET",
+                url: "like.php" ,
+                data: { id: enc_id }
+            });
+        };
+        </script>
     </head>
 
     <body>
         <div class="jumbotron">
             <!doctype html>
             <h1 class="display-4" align="center">
-                <?= $title." Encounters" ?>
+                <?= $table['name']." Encounters" ?>
             </h1>
-            <?= '<center><img src="'.$type[$id]['pictureLink'].'" class="mr-3" alt="Ought to fix this." width="30%"></center>' ?>
+            <?= '<center><img src="'.$table['cover'].'" class="mr-3" alt="Ought to fix this." width="30%"></center>' ?>
             <p class="lead" align="center">
-                <br><?= $type[$id]['encounters'][rand(0,count($type[$id]['encounters'])-1)] ?>
+                <br><?= $table['enc_'.rand(1,$table['num_enc'])] ?>
             </p>
-            <?= '<center><a class="btn btn-primary btn-lg" href="detail.php?id='.$id.'" role="button" align="center">Gimme Another One</a></center>' ?>
+            <?= '<center><a class="btn btn-primary btn-lg" href="detail.php?id='.$id.'" role="button" align="center">Gimme Another One</a>' ?>
+            <?php
+            if ($_SESSION['role']!='null'){
+                echo '<a class="btn btn-primary btn-lg" id="likeButton" onclick="sendLike('.$id.')" role="button" align="center">"I enjoyed that"</a></center>';
+            }
+            ?>
             <p>
                 <center><a href="index.php">Go back to home page.</a></center>
             </p>
@@ -50,7 +71,9 @@ if(isset($_GET['id'])){
         </div>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="http://code.jquery.com/jquery-3.5.0.js"
+  integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc="
+  crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     </body>

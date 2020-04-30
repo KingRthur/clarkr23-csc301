@@ -1,34 +1,68 @@
 <?php
-require('json.php');
+require_once('dbCl.php');
+session_start();
 
 function addEncType() {
-    //Check if JSON file exists. Create an empty version if not.
-    if (!file_exists('type.json')){
-        $h=fopen('type.json','w+');
-        fwrite($h,'');
-        fclose($h);
-    }
-    //If form data is passed, store data in an array.
     if(count($_POST)>0){
+        //$_SESSION['user_id']=2;//Fuck. Plz remeber to remove this when its fixed.
         //There should probably be some validation that the client hasn't altered the POST array...
-        $index=0;
-        $encIndex=0;
-        $tempRec=[];
-        $tempEnc=[];
+    //////////    
+        //Calculate the number of non-null encounters entered. And shift them to be adjacent in the order.
+        $num_enc=0;
         foreach($_POST as $key => $value){
-            if ($index<2) ($tempRec[$key] = $value);
-            else {$tempEnc[$encIndex] = $value;
-                $encIndex++;
+            if (preg_match('/enc_/', $key) && $value != '') {
+                $num_enc++;
+                $_POST[$key]=null;
+                $_POST['enc_'.$num_enc]=$value;
             }
-            $index++;
         }
-        $tempRec['encounters']=$tempEnc;
-        //Write data to JSON db.
-        $input = readJSON('type.json');
-        $input[count($input)] = $tempRec;
-        writeJSON("type.json",$input);
+        
+        //Validate the null typing of the null encounters.
+        $j = $num_enc;
+        while($j<10){
+            $j++;
+            $_POST['enc_'.$j]=null;
+        }
+
+       $pdo = connectDB();
+    ///////////
+        //Create an assoicative array of values to pass to the INSERT.
+        $tableAtts=[];
+        foreach($_POST as $key => $value){
+            $tableAtts[$key] = $value;
+        }
+        $tableAtts['num_enc']=$num_enc;
+        $tableAtts['creator_id']=$_SESSION['user_id'];
+        $tableAtts['date_created']=date("Y-m-d");
+        try{
+        $pdo->beginTransaction();
+        $stmt = $pdo->prepare('INSERT INTO `encounter_types`(`name`, `num_enc`, `cover`, `creator_id`, `date_created`, `enc_1`, `enc_2`, `enc_3`, `enc_4`, `enc_5`, `enc_6`, `enc_7`, `enc_8`, `enc_9`, `enc_10`) VALUES (:name,:num_enc,:cover,:creator_id,:date_created,:enc_1,:enc_2,:enc_3,:enc_4,:enc_5,:enc_6,:enc_7,:enc_8,:enc_9,:enc_10)');
+
+        $stmt->bindParam(':name', $tableAtts['name'], PDO::PARAM_STR, 20);
+        $stmt->bindParam(':num_enc', $tableAtts['num_enc'], PDO::PARAM_INT);
+        $stmt->bindParam(':cover', $tableAtts['cover'], PDO::PARAM_STR, 140);
+        $stmt->bindParam(':creator_id', $tableAtts['creator_id'], PDO::PARAM_INT);
+        $stmt->bindParam(':date_created', $tableAtts['date_created'], PDO::PARAM_STR);
+        $x=1;
+        while($x <= $tableAtts['num_enc']){
+            if (is_null($tableAtts['enc_'.$x])){
+                $stmt->bindParam(':enc_'.$x, $tableAtts['enc_'.$x], PDO::PARAM_NULL);
+            }
+            else{
+               $stmt->bindParam(':enc_'.$x, $tableAtts['enc_'.$x], PDO::PARAM_STR, 200); 
+            }
+            $x++;
+        }
+        $stmt -> execute($tableAtts);
+        $pdo->commit();
+        }
+        catch (Exception $e){
+            $pdo->rollback();
+            throw $e;
+        }
         //Notify user.
         echo "<p>Data successfully updated!</p>";
+        echo '<script type="text/JavaScript">window.location.replace("index.php?redir=create");</script>'; 
     }
    
 }
@@ -62,12 +96,12 @@ function addEncType() {
                 Enter the info for your encounter table below:
             </p>
             <?php
-                $i=0;
+                $i=1;
                 echo '<form action="create.php" method="POST"><br/>
-                <center>Name of Encounter Set: <input type="text" name="name"></center><br/>
-                <center>Link to Cover Photo: <input type="text" name="pictureLink" value="https://picsum.photos/seed/picsum/200/300"></center></br>';
-                while($i<10){
-                    echo '<center>'.($i+1).'.   <input type="text" name="enc'.$i.' required"/></center><br/>';
+                <center>Name of Encounter Set: <input type="text" name="name" required></center><br/>
+                <center>Link to Cover Photo: <input type="text" name="cover" value="https://picsum.photos/seed/picsum/750/200.jpg"></center></br>';
+                while($i<11){
+                    echo '<center>'.($i).'.   <input type="text" name="enc_'.$i.'"/></center><br/>';
                     $i++;
                 }
                 echo '<center><button type="sumbit" class="btn btn-primary btn-lg">Submit</button></center>';

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 30, 2020 at 06:07 PM
+-- Generation Time: Apr 30, 2020 at 06:21 PM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 7.3.12
 
@@ -55,14 +55,14 @@ CREATE TABLE `encounter_types` (
 
 INSERT INTO `encounter_types` (`id`, `name`, `num_enc`, `cover`, `date_created`, `last_modified`, `likes`, `creator_id`, `enc_1`, `enc_2`, `enc_3`, `enc_4`, `enc_5`, `enc_6`, `enc_7`, `enc_8`, `enc_9`, `enc_10`) VALUES
 (1, 'Arctic', 10, '', '2020-04-14 00:00:00', '2020-04-30 00:00:00', 8, 1, 'Encounter one', 'Encounter two', 'Encounter three', 'Encounter four', 'Encounter five', 'Encounter six', 'Encounter seven', 'Encounter eight', 'Encounter nine', 'Encounter ten'),
-(3, 'Desert', 10, 'https://picsum.photos/seed/picsum/200/300', '2020-04-30 00:00:00', '2020-04-30 00:00:00', 0, 2, 'encownter one', 'encownter two', 'encownter three', 'encownter four', 'encownter five', '', 'encownter seven', '', '', 'encouwnter 10'),
-(4, 'Mountain', 5, 'https://picsum.photos/seed/picsum/200/300', '2020-04-30 00:00:00', '2020-04-30 00:00:00', 0, 2, 'encccc1', 'enccc2', 'enccc5', 'enccccc8', 'enccc 10', NULL, NULL, NULL, NULL, NULL),
-(6, 'Nautical', 3, 'https://picsum.photos/seed/picsum/200/300', '2020-04-10 00:00:00', '2020-04-30 05:10:57', 0, 2, 'encone', 'encfour', 'encithinkso', '', '', '', '', '', '', ''),
-(8, 'Town', 10, 'https://picsum.photos/seed/picsum/200/300', '2020-04-30 00:00:00', '2020-04-30 06:26:15', 1, 2, 'The bakery is on fire!!', 'The town crier has been murdered!', 'Rats have taken over the town hall. But they\'re, like, sentient rat politicians...', 'Help! Planar rift!', 'A quiet day in [townname].', 'You find 2 gold in the gutter.', 'There\'s a sale on tunics!', 'A festival to the pagan god of looms.', 'Issekai hero appears.', 'Terrasque.'),
-(15, 'Science Lab', 1, 'https://picsum.photos/seed/picsum/200/300', '2020-04-30 00:00:00', '2020-04-30 08:01:54', 1, 12, 'Welcome to the Science Team', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(16, 'Evil Lair', 1, 'https://picsum.photos/seed/picsum/200/300', '2020-04-30 00:00:00', '2020-04-30 08:04:22', 0, 13, 'EVILEVILEVIEL', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(17, 'Sewer', 1, 'https://picsum.photos/seed/picsum/200/300', '2020-04-30 00:00:00', '2020-04-30 09:20:55', 0, 12, 'grosooooosososs', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(19, 'Castle', 3, 'https://picsum.photos/seed/picsum/200/300', '2020-04-30 00:00:00', '2020-04-30 11:23:12', 0, 1, 'Banners!', 'Statues!', 'Balls!', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(3, 'Desert', 10, 'https://picsum.photos/seed/picsum/200/300.jpg', '2020-04-30 00:00:00', '2020-04-30 00:00:00', 0, 2, 'encownter one', 'encownter two', 'encownter three', 'encownter four', 'encownter five', '', 'encownter seven', '', '', 'encouwnter 10'),
+(4, 'Mountain', 5, 'https://picsum.photos/seed/picsum/750/250.jpg', '2020-04-30 00:00:00', '2020-04-30 00:00:00', 0, 2, 'encccc1', 'enccc2', 'enccc5', 'enccccc8', 'enccc 10', NULL, NULL, NULL, NULL, NULL),
+(6, 'Nautical', 3, 'https://picsum.photos/seed/picsum/200/300.jpg', '2020-04-10 00:00:00', '2020-04-30 05:10:57', 0, 2, 'encone', 'encfour', 'encithinkso', '', '', '', '', '', '', ''),
+(8, 'Town', 10, 'https://picsum.photos/seed/picsum/200/300.jpg', '2020-04-30 00:00:00', '2020-04-30 06:26:15', 1, 2, 'The bakery is on fire!!', 'The town crier has been murdered!', 'Rats have taken over the town hall. But they\'re, like, sentient rat politicians...', 'Help! Planar rift!', 'A quiet day in [townname].', 'You find 2 gold in the gutter.', 'There\'s a sale on tunics!', 'A festival to the pagan god of looms.', 'Issekai hero appears.', 'Terrasque.'),
+(15, 'Science Lab', 1, 'https://picsum.photos/seed/picsum/200/300.jpg', '2020-04-30 00:00:00', '2020-04-30 08:01:54', 1, 12, 'Welcome to the Science Team', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(16, 'Evil Lair', 1, 'https://picsum.photos/seed/picsum/200/300.jpg', '2020-04-30 00:00:00', '2020-04-30 08:04:22', 0, 13, 'EVILEVILEVIEL', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(17, 'Sewer', 1, 'https://picsum.photos/seed/picsum/200/300.jpg', '2020-04-30 00:00:00', '2020-04-30 09:20:55', 0, 12, 'grosooooosososs', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(19, 'Castle', 3, 'https://picsum.photos/seed/picsum/200/300.jpg', '2020-04-30 00:00:00', '2020-04-30 11:23:12', 0, 1, 'Banners!', 'Statues!', 'Balls!', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
