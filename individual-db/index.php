@@ -1,5 +1,4 @@
 <?php
-$email="rclark.437.j@gmail.com";
 require_once('dbCl.php');
 session_start();
 if (!isset($_SESSION['role'])) $_SESSION['role'] = 'null';
@@ -26,7 +25,7 @@ while ($row = $stmt->fetch()) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+        <base href="./" target="_self">
         <title>Encounter Generator</title>
     </head>
 
@@ -38,8 +37,12 @@ while ($row = $stmt->fetch()) {
                 Encounter Generator
             </h1>
             <?php if (isset($_GET['redir'])){
-                    if ($_GET['redir']=='delete') echo '<p>Data successfully deleted!</p></br>';
-                    elseif ($_GET['redir']=='create') echo '<p>Data successfully added!</p></br>';
+                    if ($_GET['redir']=='delete') echo '<div class="alert alert-warning" role="alert">
+                      Data successfully deleted!
+                    </div></br>';
+                    elseif ($_GET['redir']=='create') echo '<div class="alert alert-success" role="alert">
+                      Data successfully added!
+                    </div></br>';
                 }
                 ?>
             <p class="lead" align="center">
@@ -49,16 +52,17 @@ while ($row = $stmt->fetch()) {
                 echo '<center><form action="detail.php" method="GET" id="enc_dropdown_detail"</center>';
                 echo '<center><select form="enc_dropdown_detail" name="id" id="id" required></center>';
                 foreach($type as $key => $value){
-                    /*echo '<center><a class="btn btn-primary btn-lg" href="detail.php?id='.$i.'" role="button" align="center">'.$type[$i]['name'].'</a></center><br/>';*/
                     echo '<option value="'.$key.'">'.$value.'</option>';
                 }
                 echo '</select></center></br>';
                 echo '<button type="submit" class="btn btn-primary btn-lg">Begin the encounter!</button>';
                 echo '</form>';
+                if (!(($_SESSION['role'])=='user' || $_SESSION['role']=='manager' || $_SESSION['role']=='admin')){
+                    echo '<p class="lead" align="center">
+                        Or <a href="signin.php">Sign In</a> or <a href="signup.php">Sign Up</a> to create and edit encounters.<br/>
+                    </p>';
+                }
             ?>
-            <p class="lead" align="center">
-                Or <a href="signin.php">Sign In</a> or <a href="signup.php">Sign Up</a> to create and edit encounters.<br/>
-            </p>
             <p class="lead" align="center">
                 <?php
                 if ($_SESSION['role']=='user'){
@@ -67,11 +71,8 @@ while ($row = $stmt->fetch()) {
                     $i=0;
                     echo '<center><form action="edit.php" method="GET" id="enc_dropdown_edit"></center>';
                     echo '<center><select form="enc_dropdown_edit" name="id" id="id" required></center>';
-                    print_r($type);
                     foreach($type as $key => $value){
-                        /*echo '<center><a class="btn btn-primary btn-lg" href="detail.php?id='.$i.'" role="button" align="center">'.$type[$i]['name'].'</a></center><br/>';*/
                         $table=loadTable($key);
-                        print_r($type);
                         if ($table['creator_id']==$_SESSION['user_id']){
                             echo '<option value="'.$key.'">'.$value.'</option>';
                         }
@@ -89,7 +90,6 @@ while ($row = $stmt->fetch()) {
                     echo '<center><form action="edit.php" method="GET" id="enc_dropdown_edit"></center>';
                     echo '<center><select form="enc_dropdown_edit" name="id" id="id" required></center>';
                     foreach($type as $key => $value){
-                        /*echo '<center><a class="btn btn-primary btn-lg" href="detail.php?id='.$i.'" role="button" align="center">'.$type[$i]['name'].'</a></center><br/>';*/
                         echo '<option value="'.$key.'">'.$value.'</option>';
                     }
                     echo '</select></center></br>';
@@ -107,7 +107,7 @@ while ($row = $stmt->fetch()) {
                 ?>
             </p>
             <hr class="my-4">
-            <center><p>Some encounters borrowed from <a href="http://www.dndspeak.com">Dndspeak</a>.</p></center>
+            <center><p>Some encounters borrowed from <a href="http://www.dndspeak.com" target="_blank">Dndspeak</a>.</p></center>
 
         </div>
         <!-- Optional JavaScript -->

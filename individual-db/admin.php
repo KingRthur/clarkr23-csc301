@@ -2,8 +2,7 @@
 require_once ('dbCl.php');
 session_start();
 if (!isset($_SESSION['role'])) $_SESSION['role'] = 'null';
-$_POST['funcType'] = 'null';
-           
+$_POST['funcType'] = 'null';     
 ?>
 
 
@@ -15,14 +14,13 @@ $_POST['funcType'] = 'null';
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+        <base href="./" target="_self">
         <title>Super Secret Admin Portal</title>
     </head>
 
     <body>
         <div class="jumbotron">
             <!doctype html>
-            
             <h1 class="display-4" align="center">
                 <?= "The Portal" ?>
             </h1>
@@ -58,7 +56,6 @@ $_POST['funcType'] = 'null';
                 echo '<input type="hidden" name="funcType" value="modify-user"/>';
                 echo '<center><select form="user_dropdown_admin" name="id" id="id" required></center>';
                 foreach($users as $key => $value){
-                    /*echo '<center><a class="btn btn-primary btn-lg" href="detail.php?id='.$i.'" role="button" align="center">'.$type[$i]['name'].'</a></center><br/>';*/
                     echo '<option value="'.$key.'">'.$value.'</option>';
                 }
                 echo '</select></center></br>';
@@ -66,14 +63,13 @@ $_POST['funcType'] = 'null';
                 echo '</form>';   
             ?>
             <p class="lead" align="center">
-                Select a user account to edit:
+                Select an encounter to edit:
             </p>
             <?php
                 echo '<center><form action="edit-enc-admin.php" method="POST" id="enc_dropdown_admin"</center>';
                 echo '<input type="hidden" name="funcType" value="modify-enc"/>';
                 echo '<center><select form="enc_dropdown_admin" name="id" id="id" required></center>';
                 foreach($types as $key => $value){
-                    /*echo '<center><a class="btn btn-primary btn-lg" href="detail.php?id='.$i.'" role="button" align="center">'.$type[$i]['name'].'</a></center><br/>';*/
                     echo '<option value="'.$key.'">'.$value.'</option>';
                 }
                 echo '</select></center></br>';

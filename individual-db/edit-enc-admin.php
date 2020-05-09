@@ -8,9 +8,7 @@ $id=$_POST['id'];
 function modEncType() {
     $pdo = connectDB();
     //If form data is passed, replace data in the DB.
-    if(count($_POST)>0){
-        //There should probably be some validation that the client hasn't altered the POST array...
-            
+    if(count($_POST)>0){ 
         //Calculate the number of non-null encounters entered. And shift them to be adjacent in the order.
         $num_enc=0;
         foreach($_POST as $key => $value){
@@ -60,9 +58,7 @@ function modEncType() {
 }
 
 function delEncType() {
-    //Check if JSON file exists.
     $pdo = connectDB();
-    
         //If delete flag is passed, delete the record.
         if($_POST['funcType'] == 'delete'){
             try{
@@ -92,7 +88,7 @@ function delEncType() {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+        <base href="./" target="_self">
         <title>Super Secret Admin Portal</title>
     </head>
 

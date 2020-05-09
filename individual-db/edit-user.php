@@ -11,38 +11,58 @@ function modUserType() {
     $pdo = connectDB();
     //If form data is passed, replace data in the DB.
     if(count($_POST)>0){
-        //There should probably be some validation that the client hasn't altered the POST array...
-
         //Create an assoicative array of values to pass to the INSERT.
         $userAtts=[];
         unset($_POST['funcType']);
         foreach($_POST as $key => $value){
             $userAtts[$key] = $value;
         }
-        $userAtts['password'] = password_hash($userAtts['password'], PASSWORD_DEFAULT);
-        try{
-        $pdo->beginTransaction();
-        $stmt = $pdo->prepare('UPDATE users SET username=:username, password=:password, email=:email, role=:role WHERE id=:id');
-
-        $stmt->bindParam(':username', $userAtts['username'], PDO::PARAM_STR, 20);
-        $stmt->bindParam(':password', $userAtts['password'], PDO::PARAM_STR, 255);
-        $stmt->bindParam(':email', $userAtts['email'], PDO::PARAM_STR, 50);
-        $stmt->bindParam(':role', $userAtts['role'], PDO::PARAM_STR. 20);
-        $stmt -> execute($userAtts);
-        $pdo->commit();
-        //Notify user.
-        echo "<p>Data successfully updated!</p>";
+        if ($_POST['password'] != ""){
+            $userAtts['password'] = password_hash($userAtts['password'], PASSWORD_DEFAULT);
+            try{
+            $pdo->beginTransaction();
+            $stmt = $pdo->prepare('UPDATE users SET username=:username, password=:password, email=:email, role=:role WHERE id=:id');
+            $stmt->bindParam(':username', $userAtts['username'], PDO::PARAM_STR, 20);
+            $stmt->bindParam(':password', $userAtts['password'], PDO::PARAM_STR, 255);
+            $stmt->bindParam(':email', $userAtts['email'], PDO::PARAM_STR, 50);
+            $stmt->bindParam(':role', $userAtts['role'], PDO::PARAM_STR. 20);
+            $stmt -> execute($userAtts);
+            $pdo->commit();
+            //Notify user.
+            echo '<div class="alert alert-success" role="alert">
+              User successfully updated!
+            </div></br>';
+            }
+            catch (Exception $e){
+                $pdo->rollback();
+                throw $e;
+            }
         }
-        catch (Exception $e){
-            $pdo->rollback();
-            throw $e;
+        else{
+            unset($userAtts['password']);
+            try{
+            $pdo->beginTransaction();
+            $stmt = $pdo->prepare('UPDATE users SET username=:username, email=:email, role=:role WHERE id=:id');
+            $stmt->bindParam(':username', $userAtts['username'], PDO::PARAM_STR, 20);
+            $stmt->bindParam(':email', $userAtts['email'], PDO::PARAM_STR, 50);
+            $stmt->bindParam(':role', $userAtts['role'], PDO::PARAM_STR. 20);
+            $stmt -> execute($userAtts);
+            $pdo->commit();
+            //Notify user.
+            echo '<div class="alert alert-success" role="alert">
+              User successfully updated!
+            </div></br>';
+            }
+            catch (Exception $e){
+                $pdo->rollback();
+                throw $e;
+            }
         }
     }
    
 }
 
 function delUserType() {
-    //Check if JSON file exists.
     $pdo = connectDB();
     
         //If delete flag is passed, delete the record.
@@ -53,7 +73,9 @@ function delUserType() {
                 $stmt -> execute(['id' => $_POST['id']]);
                 $pdo->commit();
                 //Notify user.
-                echo "<p>Data successfully deleted!</p>";
+                echo '<div class="alert alert-warning" role="alert">
+                      User successfully deleted!
+                    </div></br>';
                 echo '<script type="text/JavaScript">window.location.replace("index.php?redir=delete");</script>'; 
             }
             catch (Exception $e){
@@ -74,7 +96,7 @@ function delUserType() {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+        <base href="./" target="_self">
         <title>Super Secret Admin Portal</title>
     </head>
 
@@ -99,7 +121,6 @@ function delUserType() {
                 //Query the user table for the specified ID.
                 $stmt = $pdo->prepare('SELECT * FROM users WHERE id = ?');
                 $stmt->execute([$id]);
-                $foo=0;
                 //Retrieve column names and create local variables to access them in the PDO array.
                 $user=[];
                 $row = $stmt->fetch();
@@ -112,7 +133,7 @@ function delUserType() {
                 <input type="hidden" name="id" value="'.$id.'"/>
                 <br/>
                 <center>Username: <input type="text" name="username" value="'.$user['username'].'"></center><br/>
-                <center>Password: <input type="password" name="password" value="'.$user['password'].'"></center></br>
+                <center>Password: <input type="password" name="password" value=""></center></br>
                 <center>Email: <input type="email" name="email" value="'.$user['email'].'"></center></br>
                 <center>Role: <input type="text" name="role" value="'.$user['role'].'"></center></br>';
                 echo '<center><button type="sumbit" class="btn btn-primary btn-lg">Submit</button></center>';

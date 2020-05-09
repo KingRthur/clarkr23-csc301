@@ -29,14 +29,12 @@ if($_GET['id']<0 || count($table) < 2){
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+        <base href="./" target="_self">
         <title><?= $table['name'] ?> Encounters</title>
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script>
         function sendLike(enc_id){
-           
-            // $("#likeButton").click(function(){
             $.ajax({
                 type: "GET",
                 url: "like.php" ,
@@ -52,21 +50,25 @@ if($_GET['id']<0 || count($table) < 2){
             <h1 class="display-4" align="center">
                 <?= $table['name']." Encounters" ?>
             </h1>
-            <?= '<center><img src="data:image/jpeg;base64,'.base64_encode( $table['cover']).'" class="mr-3" alt="Ought to fix this." width="30%"></center>' ?>
+            <?= '<center><img src="'.$table['cover'].'" class="mr-3" alt="Cover photo." width="30%"></center>' ?>
             <p class="lead" align="center">
-                <br><?= $table['enc_'.rand(1,$table['num_enc'])] ?>
+                <br><?php $enc = $table['enc_'.rand(1,$table['num_enc'])];
+                while ($enc == ""){
+                    $enc = $table['enc_'.rand(1,$table['num_enc'])];
+                } 
+                echo $enc?>
             </p>
             <?= '<center><a class="btn btn-primary btn-lg" href="detail.php?id='.$id.'" role="button" align="center">Gimme Another One</a>' ?>
             <?php
             if ($_SESSION['role']!='null'){
-                echo '<a class="btn btn-primary btn-lg" id="likeButton" onclick="sendLike('.$id.')" role="button" align="center">"I enjoyed that"</a></center>';
+                echo '</br></br><a class="btn btn-primary btn-sm" id="likeButton" onclick="sendLike('.$id.')" role="button" align="center">"I enjoyed that"</a></center>';
             }
             ?>
             <p>
                 <center><a href="index.php">Go back to home page.</a></center>
             </p>
             <hr class="my-4">
-            <center><p>Encounters borrowed from <a href="http://www.dndspeak.com">Dndspeak</a>.</p></center>
+            <center><p>Some encounters borrowed from <a href="http://www.dndspeak.com" target="_blank">Dndspeak</a>.</p></center>
 
         </div>
         <!-- Optional JavaScript -->

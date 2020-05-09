@@ -12,8 +12,6 @@ function modEncType() {
     $pdo = connectDB();
     //If form data is passed, replace data in the DB.
     if(count($_POST)>0){
-        //There should probably be some validation that the client hasn't altered the POST array...
-            
         //Calculate the number of non-null encounters entered. And shift them to be adjacent in the order.
         $num_enc=0;
         foreach($_POST as $key => $value){
@@ -32,7 +30,6 @@ function modEncType() {
         try{
         $pdo->beginTransaction();
         $stmt = $pdo->prepare('UPDATE encounter_types SET name=:name, num_enc=:num_enc, cover=:cover, enc_1=:enc_1, enc_2=:enc_2, enc_3=:enc_3, enc_4=:enc_4, enc_5=:enc_5, enc_6=:enc_6, enc_7=:enc_7, enc_8=:enc_8, enc_9=:enc_9, enc_10=:enc_10 WHERE id=:id');
-
         $stmt->bindParam(':name', $tableAtts['name'], PDO::PARAM_STR, 20);
         $stmt->bindParam(':num_enc', $tableAtts['num_enc'], PDO::PARAM_INT);
         $stmt->bindParam(':cover', $tableAtts['cover'], PDO::PARAM_STR, 140);
@@ -49,7 +46,9 @@ function modEncType() {
         $stmt -> execute($tableAtts);
         $pdo->commit();
         //Notify user.
-        echo "<p>Data successfully updated!</p>";
+        echo '<div class="alert alert-success" role="alert">
+          Data successfully added!
+        </div></br>';
         }
         catch (Exception $e){
             $pdo->rollback();
@@ -60,25 +59,23 @@ function modEncType() {
 }
 
 function delEncType() {
-    //Check if JSON file exists.
     $pdo = connectDB();
-    
-        //If delete flag is passed, delete the record.
-        if($_POST['funcType'] == 'delete'){
-            try{
-                $pdo->beginTransaction();
-                $stmt = $pdo->prepare('DELETE FROM encounter_types WHERE id=:id');
-                $stmt -> execute(['id' => $_POST['id']]);
-                $pdo->commit();
-                //Notify user.
-                echo "<p>Data successfully deleted!</p>";
-                echo '<script type="text/JavaScript">window.location.replace("index.php?redir=delete");</script>'; 
-            }
-            catch (Exception $e){
-                $pdo->rollback();
-                throw $e;
-            }
+    //If delete flag is passed, delete the record.
+    if($_POST['funcType'] == 'delete'){
+        try{
+            $pdo->beginTransaction();
+            $stmt = $pdo->prepare('DELETE FROM encounter_types WHERE id=:id');
+            $stmt -> execute(['id' => $_POST['id']]);
+            $pdo->commit();
+            //Notify user.
+            echo "<p>Data successfully deleted!</p>";
+            echo '<script type="text/JavaScript">window.location.replace("index.php?redir=delete");</script>'; 
         }
+        catch (Exception $e){
+            $pdo->rollback();
+            throw $e;
+        }
+    }
 }
            
 ?>
@@ -92,7 +89,7 @@ function delEncType() {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+        <base href="./" target="_self">
         <title>Encounter Generator</title>
     </head>
 

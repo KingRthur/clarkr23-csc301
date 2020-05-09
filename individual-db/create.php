@@ -4,9 +4,6 @@ session_start();
 
 function addEncType() {
     if(count($_POST)>0){
-        //$_SESSION['user_id']=2;//Fuck. Plz remeber to remove this when its fixed.
-        //There should probably be some validation that the client hasn't altered the POST array...
-    //////////    
         //Calculate the number of non-null encounters entered. And shift them to be adjacent in the order.
         $num_enc=0;
         foreach($_POST as $key => $value){
@@ -25,7 +22,7 @@ function addEncType() {
         }
 
        $pdo = connectDB();
-    ///////////
+        
         //Create an assoicative array of values to pass to the INSERT.
         $tableAtts=[];
         foreach($_POST as $key => $value){
@@ -78,7 +75,7 @@ function addEncType() {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+        <base href="./" target="_self">
         <title>Encounter Generator</title>
     </head>
 
@@ -99,7 +96,7 @@ function addEncType() {
                 $i=1;
                 echo '<form action="create.php" method="POST"><br/>
                 <center>Name of Encounter Set: <input type="text" name="name" required></center><br/>
-                <center>Link to Cover Photo: <input type="text" name="cover" value="https://picsum.photos/seed/picsum/200/300"></center></br>';
+                <center>Link to Cover Photo: <input type="text" name="cover" value="https://picsum.photos/seed/picsum/750/200.jpg"></center></br>';
                 while($i<11){
                     echo '<center>'.($i).'.   <input type="text" name="enc_'.$i.'"/></center><br/>';
                     $i++;
